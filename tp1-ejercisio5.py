@@ -1,4 +1,4 @@
-#trabajo practico 1.
+#trabajo practico 1: ejercisio 5.
 #Debera resolver los ejercicios 5 y 22 de la guia de ejercicios de recursividad del libro, subirlos a github y pasar el link en la entrega.
 romano = input('ingrese el numero romano: ').upper()
 def romano_a_decimal(romano):
