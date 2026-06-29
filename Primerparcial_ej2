@@ -1,125 +1,136 @@
 from collections import deque
-# Importamos la lista de superhéroes desde tu archivo
+# Importamos la lista real desde tu archivo de datos
 from super_heroes_data import superheroes
 
 # =====================================================================
-# RESOLUCIÓN DE LOS INCISOS
-# =====================================================================
-
 # 1. Listado ordenado de manera ascendente por nombre de los personajes
+# =====================================================================
 print("1. LISTADO ORDENADO ASCENDENTE POR NOMBRE:")
-# Usamos sorted con una función lambda que accede a la clave 'name'
 por_nombre = sorted(superheroes, key=lambda x: x['name'])
 for p in por_nombre:
     print(f" - {p['name']} (Alias: {p['alias']})")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 2. Determinar en qué posición está The Thing y Rocket Raccoon
+# =====================================================================
 print("2. POSICIÓN DE THE THING Y ROCKET RACCOON (en la lista original):")
 pos_thing = None
 pos_rocket = None
 
 for indice, p in enumerate(superheroes):
     if p['name'] == "The Thing":
-        pos_thing = indice  # Posición basada en índice (0-indexed)
+        pos_thing = indice
     if p['name'] == "Rocket Raccoon":
         pos_rocket = indice
 
-# Se muestra sumando 1 para que sea una posición humana estándar
+# Sumamos 1 para que devuelva la posición humana real (1-101) en vez del índice (0-100)
 print(f" - The Thing está en la posición: {pos_thing + 1 if pos_thing is not None else 'No encontrado'}")
 print(f" - Rocket Raccoon está en la posición: {pos_rocket + 1 if pos_rocket is not None else 'No encontrado'}")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 3. Listar todos los villanos de la lista
-print("3. LISTADO DE VILLANOS:")
+# =====================================================================
+print("3. LISTADO DE TODOS LOS VILLANOS:")
 for p in superheroes:
     if p['is_villain']:
         print(f" - Villano: {p['name']} (Alias: {p['alias']})")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 4. Poner todos los villanos en una cola para determinar luego cuáles aparecieron antes de 1980
+# =====================================================================
 print("4. VILLANOS QUE APARECIERON ANTES DE 1980 (PROCESADOS CON COLA):")
 cola_villanos = deque()
 
-# Encolar villanos
+# Encolar estructuradamente usando append
 for p in superheroes:
     if p['is_villain']:
         cola_villanos.append(p)
 
-# Desencolar y verificar año de aparición
+# Desencolar usando popleft (estructura FIFO) para evaluarlos uno a uno
 while len(cola_villanos) > 0:
     villano_actual = cola_villanos.popleft()
     if villano_actual['first_appearance'] < 1980:
         print(f" - [{villano_actual['first_appearance']}] {villano_actual['name']}")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 5. Listar los superhéroes que comienzan con Bl, G, My, y W
+# =====================================================================
 print("5. SUPERHÉROES QUE COMIENZAN CON Bl, G, My, y W:")
-# Nota: La consigna pide 'superhéroes', por lo que filtramos is_villain == False
+# Filtramos que sean superhéroes (is_villain == False)
 for p in superheroes:
     if not p['is_villain']:
         nombre = p['name']
         if nombre.startswith('Bl') or nombre.startswith('G') or nombre.startswith('My') or nombre.startswith('W'):
             print(f" - {nombre}")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 6. Listado de personajes ordenado por nombre real de manera ascendente
+# =====================================================================
 print("6. LISTADO ORDENADO ASCENDENTE POR NOMBRE REAL:")
-# Como algunos personajes pueden tener None en real_name, usamos un string vacío como fallback en el ordenamiento
+# Controlamos con un String vacío en caso de que algún personaje carezca de nombre real en la base
 por_nombre_real = sorted(superheroes, key=lambda x: x['real_name'] if x['real_name'] is not None else "")
 for p in por_nombre_real:
     print(f" - Nombre Real: {p['real_name']} | Personaje: {p['name']}")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 7. Listado de superhéroes ordenados por fecha de aparición
+# =====================================================================
 print("7. SUPERHÉROES ORDENADOS POR FECHA DE APARICIÓN:")
 superheroes_buenos = [p for p in superheroes if not p['is_villain']]
 por_aparicion = sorted(superheroes_buenos, key=lambda x: x['first_appearance'])
 for p in por_aparicion:
     print(f" - [{p['first_appearance']}] {p['name']}")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 8. Modificar el nombre real de Ant Man a Scott Lang
-print("8. MODIFICAR NOMBRE REAL DE ANT MAN:")
-modificado = False
+# =====================================================================
+print("8. MODIFICANDO NOMBRE REAL DE ANT MAN:")
 for p in superheroes:
     if p['name'] == "Ant Man":
         p['real_name'] = "Scott Lang"
-        modificado = True
-        print(f" - ¡Modificado con éxito! Ahora {p['name']} tiene como nombre real: {p['real_name']}")
+        print(f" - Modificación exitosa. {p['name']} ahora tiene el nombre real: {p['real_name']}")
         break
-if not modificado:
-    print(" - No se encontró a Ant Man en la lista.")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 9. Mostrar los personajes que en su biografía incluyan la palabra time-traveling o suit
+# =====================================================================
 print("9. PERSONAJES CON 'time-traveling' O 'suit' EN SU BIOGRAFÍA:")
 for p in superheroes:
     bio = p['short_bio'].lower()
     if "time-traveling" in bio or "suit" in bio:
         print(f" - {p['name']}: {p['short_bio']}")
-print("-" * 50)
+print("-" * 70)
 
 
+# =====================================================================
 # 10. Eliminar a Electro y Baron Zemo de la lista y mostrar su información si estaba en la lista
-print("10. ELIMINAR A ELECTRO Y BARON ZEMO:")
+# =====================================================================
+print("10. ELIMINACIÓN DE ELECTRO Y BARON ZEMO:")
 personajes_a_eliminar = ["Electro", "Baron Zemo"]
 
-# Recorremos la lista de atrás hacia adelante para eliminar de forma segura por índice
+# Recorremos la lista hacia atrás para evitar saltar índices al eliminar elementos vivos
 for i in range(len(superheroes) - 1, -1, -1):
     p = superheroes[i]
     if p['name'] in personajes_a_eliminar:
-        print(f" -> Eliminando a {p['name']}. Información del personaje:")
-        print(f"    Datos: {p}")
-        superheroes.pop(i) # Quitamos el elemento de la lista
+        print(f" -> ¡Encontrado! Eliminando de la lista a: {p['name']}")
+        print(f"    Información completa que contenía: {p}")
+        superheroes.pop(i)
 
-print(f"\n Cantidad de personajes restantes en la lista: {len(superheroes)}")
-print("-" * 50)
+print(f"\n Cantidad final de personajes remanentes en la lista: {len(superheroes)}")
+print("-" * 70)
