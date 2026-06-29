@@ -1,0 +1,46 @@
+# Trabajo Práctico: Ejercicio 1 (Recursividad con Superhéroes)
+
+# 1. Función recursiva para determinar si Capitán América está en la lista
+def buscar_capitan_america(lista):
+    # Caso base 1: La lista está vacía, no se encontró
+    if len(lista) == 0:
+        return False
+    
+    # Caso base 2: El elemento actual es el Capitán América
+    if lista[0] == "Capitán América":
+        return True
+    
+    # Llamada recursiva: achicamos la lista pasando del segundo elemento en adelante
+    return buscar_capitan_america(lista[1:])
+
+
+# 2. Función recursiva para listar (mostrar) los superhéroes
+def listar_superheroes(lista):
+    # Caso base: Si la lista está vacía, termina la ejecución
+    if len(lista) == 0:
+        return
+    
+    print(f"- {lista[0]}")
+    
+    listar_superheroes(lista[1:])
+
+
+# BLOQUE DE PRUEBA
+if __name__ == "__main__":
+    # Lista de 15 superhéroes de ejemplo
+    mis_superheroes = [
+        "Iron Man", "Spider-Man", "Thor", "Hulk", "Black Widow",
+        "Hawkeye", "Capitán América", "Doctor Strange", "Black Panther", "Ant-Man",
+        "Captain Marvel", "Groot", "Rocket Raccoon", "Scarlet Witch", "Falcon(merecia el escudo bucky)"
+    ]
+
+    print("=== LISTADO DE SUPERHÉROES ===")
+    listar_superheroes(mis_superheroes)
+    
+    print("\n=== BÚSQUEDA DEL CAPITÁN AMÉRICA ===")
+    encontrado = buscar_capitan_america(mis_superheroes)
+    
+    if encontrado:
+        print("¡Sí! Capitán América está en la lista.")
+    else:
+        print("No se encontró al Capitán América en la lista.")
